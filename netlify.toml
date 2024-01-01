@@ -1,0 +1,12 @@
+[built]
+  publish = "dist"
+
+[dev]
+  command = "npx http-server dist"  # Use any static server command that fits your project structure
+  port = 8888
+  publish = "dist"
+
+[[redirects]]
+from = '/add-user'
+to = '/.netlify/functions/add-user'
+status = 200
