@@ -8,7 +8,7 @@ const supabase = createClient(
 
 const handler = async (event, context) => {
   // Only allow POST
-  if (event.httpMethod !== "POST") {
+  if (event.httpMethod !== "GET") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
@@ -17,7 +17,7 @@ const handler = async (event, context) => {
   const params = querystring.parse(event.body);
   console.log("Parsed params:", params);
 
-  const { name, number } = params;
+  const { name, number } = event.queryStringParameters;
 
   const userData = {
     name,
@@ -27,10 +27,11 @@ const handler = async (event, context) => {
   // Save user to SupaBase
   try {
     const { data, error } = await supabase
-      .from("user") //
-      .insert([{ userData }]);
+      .from("user")
+      .insert([userData])
+      .select();
 
-    console.log("Supabase response:", data);
+    console.log("Supabase response:", error);
 
     return {
       statusCode: 200,
